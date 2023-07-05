@@ -1,26 +1,26 @@
 <template>
-<div class="control-bar">
-  <span class="iconfont icon-rotate-left" @click="imageRotate(ROTATE.LEFT)"></span>
-  <span class="iconfont icon-rotate-right" @click="imageRotate(ROTATE.RIGHT)"></span>
-  <span class="iconfont icon-bigger" @click="imageScale(ZOOM.IN)"></span>
-  <span class="iconfont icon-smaller" @click="imageScale(ZOOM.OUT)"></span>
-</div>  
+  <div class="control-bar">
+    <span class="iconfont icon-rotate-left" @click="imageRotate(ROTATE.LEFT)"></span>
+    <span class="iconfont icon-rotate-right" @click="imageRotate(ROTATE.RIGHT)"></span>
+    <span class="iconfont icon-bigger" @click="imageScale(ZOOM.IN)"></span>
+    <span class="iconfont icon-smaller" @click="imageScale(ZOOM.OUT)"></span>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ROTATE, ZOOM } from './types';
+import { ROTATE, ZOOM } from './types'
 
 const emit = defineEmits<{
   imageRotate: [dir: ROTATE],
   imageScale: [ZOOM: ZOOM]
-}>();
+}>()
 
 const imageRotate = (dir: ROTATE): void => {
-  emit('imageRotate', dir);
+  emit('imageRotate', dir)
 }
 
 const imageScale = (zoom: ZOOM): void => {
-  emit('imageScale', zoom);
+  emit('imageScale', zoom)
 }
 </script>
 

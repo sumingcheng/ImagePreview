@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import ImagePreview from './components/ImagePreview/index.vue';
+import ImagePreview from './components/ImagePreview/index.vue'
 
 const data = [
   {

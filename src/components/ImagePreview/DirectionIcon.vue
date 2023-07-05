@@ -1,20 +1,20 @@
 <template>
-  <span :class="['iconfont', `icon-${ dir }ward`]" @click="imageSlide(dir)"></span>
+  <span :class="['iconfont', `icon-${dir}ward`]" @click="imageSlide(dir)"></span>
 </template>
 
 <script lang="ts" setup>
-import { DIR } from './types';
+import { DIR } from './types'
 
 const props = defineProps<{
   dir: DIR
-}>();
+}>()
 
 const emit = defineEmits<{
-  imageSlide: [dir: DIR] 
+  imageSlide: [dir: DIR]
 }>()
 
 const imageSlide = (dir: DIR): void => {
-  emit('imageSlide', dir);
+  emit('imageSlide', dir)
 }
 
 </script>

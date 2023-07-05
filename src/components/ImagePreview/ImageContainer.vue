@@ -1,12 +1,8 @@
 <template>
   <div class="image-container">
-    <img 
-      :src="require(`../../assets/images/${ image }`)"
-      :style="{
-        transform: `rotate(${ rotate }deg) scale(${ scale })`
-      }"
-      draggable="false"
-    />
+    <img :src="require(`../../assets/images/${image}`)" :style="{
+      transform: `rotate(${rotate}deg) scale(${scale})`
+    }" draggable="false" />
   </div>
 </template>
 
@@ -15,7 +11,7 @@ const props = defineProps<{
   image: string,
   scale: number,
   rotate: number
-}>();  
+}>()
 </script>
 
 <style lang="scss" scoped>
