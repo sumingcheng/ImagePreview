@@ -1,69 +1,88 @@
 <template>
   <div class="image-preview">
-    <direction-icon :dir="DIR.BACK" @image-slide="imageSlide"></direction-icon>
-    <direction-icon :dir="DIR.FOR" @image-slide="imageSlide"></direction-icon>
-    <control-bar @image-rotate="imageRotate" @image-scale="imageScale"></control-bar>
-    <div class="slider" :style="{
-      width: preivewWidth + 'px',
-      transform: `translate3d(-${sliderLeft}px, 0, 0)`
-    }">
-      <image-container v-for="item of imageData" :key="item.id" :image="item.image" :rotate="item.rotate"
-        :scale="item.scale"></image-container>
+    <indicator 
+      :dir="ARROW_DIRECTION.LEFT"
+      @handle-image-slide="handleImageSlide"
+    ></indicator>
+    <indicator 
+      :dir="ARROW_DIRECTION.RIGHT"
+      @handle-image-slide="handleImageSlide"
+    ></indicator>
+    <control-bar
+      @handle-image-rotate="handleImageRotate"
+      @handle-image-scale="handleImageScale"
+    ></control-bar>
+    <div 
+      class="slider"
+      :style="{
+        width: sliderWidth + 'px',
+        transform: `translate3d(-${ sliderLeft }px, 0, 0)`
+      }"
+    >
+      <image-container 
+        v-for="item of imageData"
+        :key="item.id"
+        :item="item"
+      ></image-container>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import ImageContainer from './ImageContainer.vue'
-import DirectionIcon from './DirectionIcon.vue'
-import ControlBar from './ControlBar.vue'
-import { DIR, IImages, ROTATE, ZOOM } from './types'
-import { useSliderIndex, useImageData, useSliderLeft } from './hook'
+import ImageContainer from './ImageContainer.vue';
+import Indicator from './Indicator.vue';
+import ControlBar from './ControlBar.vue';
+import { ARROW_DIRECTION, IImageData, ZOOM } from './types';
+
+import {
+  useSliderIndex,
+  useSliderLeft,
+  useImageData
+} from './hooks';
 
 const props = defineProps<{
-  images: IImages[]
-}>()
+  data: IImageData[]
+}>();
 
-const imgLen = props.images.length
-const preivewWidth = imgLen * 440
+const imgLen = props.data.length;
+const sliderWidth = imgLen * 440;
 
 const {
   sliderIndex,
   setSliderIndex
-} = useSliderIndex(imgLen)
-
-const sliderLeft = useSliderLeft(sliderIndex)
+} = useSliderIndex(imgLen);
 
 const {
   imageData,
   setImageRotate,
   setImageScale
-} = useImageData(props.images)
+} = useImageData(props.data);
 
+const sliderLeft = useSliderLeft(sliderIndex);
 
-
-const imageSlide = (dir: DIR): void => {
-  imageReset(sliderIndex.value)
-  setSliderIndex(dir)
+const handleImageSlide = (dir: ARROW_DIRECTION) => {
+  imageReset(sliderIndex.value);
+  setSliderIndex(dir);
 }
 
-const imageRotate = (dir: ROTATE): void => {
-  setImageRotate(sliderIndex.value, dir)
+const handleImageRotate = (dir: ARROW_DIRECTION) => {
+  setImageRotate(sliderIndex.value, dir);
 }
 
-const imageScale = (zoom: ZOOM): void => {
-  setImageScale(sliderIndex.value, zoom)
+const handleImageScale = (zoom: ZOOM) => {
+  setImageScale(sliderIndex.value, zoom);
 }
 
-const imageReset = (index: number) => {
-  const target = imageData.value[index]
+const imageReset = (sliderIndex: number) => {
+  const target = imageData.value[sliderIndex];
 
-  target.rotate = 0
-  target.scale = 1
+  target.rotate = 0;
+  target.scale = 1;
 }
+
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .image-preview {
   position: relative;
   width: 440px;

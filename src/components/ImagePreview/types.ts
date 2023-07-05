@@ -1,9 +1,11 @@
-export enum DIR {
-  FOR = 'for',
-  BACK = 'back',
+export interface IImageData {
+  id: number;
+  image: string;
+  rotate: number;
+  scale: number;
 }
 
-export enum ROTATE {
+export enum ARROW_DIRECTION {
   LEFT = 'left',
   RIGHT = 'right'
 }
@@ -11,11 +13,4 @@ export enum ROTATE {
 export enum ZOOM {
   IN = 'in',
   OUT = 'out'
-}
-
-export interface IImages {
-  id: number;
-  image: string;
-  rotate: number;
-  scale: number;
 }

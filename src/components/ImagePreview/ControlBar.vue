@@ -1,34 +1,46 @@
 <template>
   <div class="control-bar">
-    <span class="iconfont icon-rotate-left" @click="imageRotate(ROTATE.LEFT)"></span>
-    <span class="iconfont icon-rotate-right" @click="imageRotate(ROTATE.RIGHT)"></span>
-    <span class="iconfont icon-bigger" @click="imageScale(ZOOM.IN)"></span>
-    <span class="iconfont icon-smaller" @click="imageScale(ZOOM.OUT)"></span>
+    <span 
+      class="iconfont icon-rotate-left"
+      @click="handleImageRotate(ARROW_DIRECTION.LEFT)"
+    ></span>
+    <span 
+      class="iconfont icon-rotate-right"
+      @click="handleImageRotate(ARROW_DIRECTION.RIGHT)"
+    ></span>
+    <span 
+      class="iconfont icon-zoom-in"
+      @click="handleImageScale(ZOOM.IN)"
+    ></span>
+    <span 
+      class="iconfont icon-zoom-out"
+      @click="handleImageScale(ZOOM.OUT)"
+    ></span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ROTATE, ZOOM } from './types'
+import { ARROW_DIRECTION, ZOOM } from './types';
 
 const emit = defineEmits<{
-  imageRotate: [dir: ROTATE],
-  imageScale: [ZOOM: ZOOM]
-}>()
+  handleImageRotate: [ dir: ARROW_DIRECTION ],
+  handleImageScale: [zoom: ZOOM]
+}>();
 
-const imageRotate = (dir: ROTATE): void => {
-  emit('imageRotate', dir)
+const handleImageRotate = (dir: ARROW_DIRECTION) => {
+  emit('handleImageRotate', dir);
 }
 
-const imageScale = (zoom: ZOOM): void => {
-  emit('imageScale', zoom)
+const handleImageScale = (zoom: ZOOM) => {
+  emit('handleImageScale', zoom);
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .control-bar {
   position: absolute;
-  left: 50%;
   bottom: 30px;
+  left: 50%;
   z-index: 1;
   width: 120px;
   height: 30px;

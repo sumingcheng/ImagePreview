@@ -1,9 +1,10 @@
 <template>
-  <image-preview :images="data"></image-preview>
+  <image-preview :data="data"></image-preview>
 </template>
 
 <script lang="ts" setup>
-import ImagePreview from './components/ImagePreview/index.vue'
+
+import ImagePreview from './components/ImagePreview/index.vue';
 
 const data = [
   {
