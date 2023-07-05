@@ -5,6 +5,7 @@
       :style="{
         transform: `rotate(${ rotate }deg) scale(${ scale })`
       }"
+      draggable="false"
     />
   </div>
 </template>
@@ -19,11 +20,15 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .image-container {
+  position: relative;
   float: left;
   width: 440px;
   height: 248px;
 
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     transition: all .3s;

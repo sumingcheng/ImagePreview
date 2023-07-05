@@ -6,12 +6,15 @@
       @image-rotate="imageRotate"
       @image-scale="imageScale"
     ></control-bar>
-    <div class="slider" :style="{
-      width: preivewWidth + 'px',
-      transform: `translate3d(-${ sliderLeft }px, 0, 0)`
-    }">
+    <div 
+      class="slider" 
+      :style="{
+        width: preivewWidth + 'px',
+        transform: `translate3d(-${ sliderLeft }px, 0, 0)`
+      }"
+    >
       <image-container
-        v-for="item of state.imageData"
+        v-for="item of imageData"
         :key="item.id"
         :image="item.image"
         :rotate="item.rotate"
@@ -25,72 +28,46 @@
   import ImageContainer from './ImageContainer.vue';
   import DirectionIcon from './DirectionIcon.vue';
   import ControlBar from './ControlBar.vue';
-  import { DIR, IImages, IReactive, ROTATE, ZOOM } from './types';
-  import { reactive, computed } from 'vue';
+  import { DIR, IImages, ROTATE, ZOOM } from './types';
+  import { useSliderIndex, useImageData, useSliderLeft } from './hook';
 
   const props = defineProps<{
     images: IImages[]
   }>();
-  
-  const state = reactive<IReactive>({
-    index: 0,
-    imageData: props.images
-  });
 
-  const sliderLeft = computed(() => state.index * 440);
-  
   const imgLen = props.images.length;
   const preivewWidth = imgLen * 440;
 
+  const { 
+    sliderIndex, 
+    setSliderIndex 
+  } = useSliderIndex(imgLen);
+
+  const sliderLeft = useSliderLeft(sliderIndex);
+  
+  const {
+    imageData,
+    setImageRotate,
+    setImageScale
+  } = useImageData(props.images);
+
+  
+  
   const imageSlide = (dir: DIR): void => {
-    const index = state.index;
-
-    switch (dir) {
-      case DIR.FOR:
-        state.index = index >= imgLen - 1 ? 0 : index + 1;
-        break;
-      case DIR.BACK:
-        state.index = index === 0 ? imgLen - 1 : index - 1;
-        break;
-      default:
-        break;
-    } 
-
-    imageReset();
+    imageReset(sliderIndex.value);
+    setSliderIndex(dir);
   }
 
   const imageRotate = (dir: ROTATE): void => {
-    const rotate = state.imageData[state.index].rotate;
-
-    switch (dir) {
-      case ROTATE.LEFT:
-        state.imageData[state.index].rotate = rotate - 10;
-        break;
-      case ROTATE.RIGHT:
-        state.imageData[state.index].rotate = rotate + 10;
-        break;
-      default:
-        break;
-    }
+    setImageRotate(sliderIndex.value, dir);
   }
 
   const imageScale = (zoom: ZOOM): void => {
-    const scale = state.imageData[state.index].scale;
-
-    switch (zoom) {
-      case ZOOM.IN:
-        scale < 3 && (state.imageData[state.index].scale += .1);
-        break;
-      case ZOOM.OUT:
-        scale > .2 && (state.imageData[state.index].scale -= .1);
-        break;
-      default:
-        break;
-    }
+    setImageScale(sliderIndex.value, zoom);
   }
 
-  const imageReset = () => {
-    const target = state.imageData[state.index];
+  const imageReset = (index: number) => {
+    const target = imageData.value[index];
     
     target.rotate = 0;
     target.scale = 1;

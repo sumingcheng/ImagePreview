@@ -19,8 +19,3 @@ export interface IImages {
   rotate: number;
   scale: number;
 }
-
-export interface IReactive {
-  index: number,
-  imageData: IImages[]
-}
